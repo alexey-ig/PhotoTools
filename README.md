@@ -1,2 +1,2 @@
 # PhotoTools
-A small set of tools for working with home photo and video library
+A small set of bash tools for working with home photo and video library

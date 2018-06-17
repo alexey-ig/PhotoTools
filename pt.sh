@@ -6,7 +6,7 @@ JHEAD=/usr/bin/jhead
 
 IMG_NAME_PATTERN="img_%y%m%d_%H%M%S"
 VIDEOEXT="mkv"
-FFMPEG_PARAMS="-c:v libx264 -crf 26 -profile:v high -level 4.2"
+FFMPEG_PARAMS="-c:v libx264 -crf 23 -profile:v high -level 4.2"
 
 DELIMITER="=========="
 

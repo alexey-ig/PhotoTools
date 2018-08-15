@@ -32,6 +32,13 @@ function showVideoInfo() {
     done
 }
 
+function showVideoInfoDate() {
+    for file in "${@:1}"; do
+        local DATE=$(getVideoDate "${file}")
+        echo "${file} creation date: ${DATE}"
+    done
+}
+
 function getVideoDate() {
     local INFO=`${FFPROBE} "$1" 2>&1`
     local DATETIME=`echo "${INFO}" \
@@ -156,6 +163,8 @@ case ${MODIFICATOR} in
   encodeVideo 1 "${@:2}" ;;
 'video-info')
   showVideoInfo "${@:2}" ;;
+'video-info-date')
+  showVideoInfoDate "${@:2}" ;;
 'video-rename')
   renameVideo 0 "${@:2}" ;;
 'video-rename-test')

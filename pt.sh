@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-FFMPEG=/home/hider/bin/ffmpeg
-FFPROBE=/home/hider/bin/ffprobe
+FFMPEG=/usr/bin/ffmpeg
+FFPROBE=/usr/bin/ffprobe
 JHEAD=/usr/bin/jhead
 
 IMG_NAME_PATTERN="img_%y%m%d_%H%M%S"
@@ -128,10 +128,10 @@ function concatVideo() {
 
     if [ ${ISTEST} -eq 1 ]
     then
-        echo "ffmpeg -f concat -safe 0 -i ${CONCAT} -c copy ${OUTPUT}"
+        echo "${FFMPEG} -f concat -safe 0 -i ${CONCAT} -c copy ${OUTPUT}"
         echo "rm -f ${CONCAT}"
     else
-        ffmpeg -f concat -safe 0 -i ${CONCAT} -c copy ${OUTPUT}
+        ${FFMPEG} -f concat -safe 0 -i ${CONCAT} -c copy ${OUTPUT}
         rm -f ${CONCAT}
     fi
 

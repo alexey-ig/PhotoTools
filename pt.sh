@@ -6,7 +6,7 @@ JHEAD=/usr/bin/jhead
 
 IMG_NAME_PATTERN="img_%y%m%d_%H%M%S"
 VIDEOEXT="mkv"
-FFMPEG_PARAMS="-c:v libx264 -crf 23 -profile:v high -level 4.2"
+FFMPEG_PARAMS="-c:v libx265 -crf 22 -preset fast"
 
 DELIMITER="=========="
 
@@ -53,16 +53,29 @@ function getVideoDate() {
     fi
 }
 
+function createFileName() {
+    local NAME=$1
+    local EXT=$2
+    local COUNTER=$3
+    
+    if [ -z "$COUNTER" ]
+    then
+        echo "VID${NAME}.${EXT}"
+    else
+        echo "VID${NAME}-${COUNTER}.${EXT}"
+    fi
+}
+
 function checkFileExists() {
     local DIR=$1
     local NAME=$2
     local EXT=$3
     local COUNTER=0
 
-    local FULL_NAME="${DIR}/VID${NAME}.${EXT}"
+    local FULL_NAME="${DIR}/$(createFileName ${NAME} ${EXT})"
     while [ -f "${FULL_NAME}" ]; do
         COUNTER=$((COUNTER+1))
-        FULL_NAME="${DIR}/VID${NAME}-${COUNTER}.${EXT}"
+        FULL_NAME="${DIR}/$(createFileName ${NAME} ${EXT} ${COUNTER})"
     done
     echo "$FULL_NAME"
 }
@@ -77,7 +90,12 @@ function renameVideo() {
         local FNAME=$(basename "$file")
         local EXT="${FNAME##*.}"
 
-        local FULL_NAME=$(checkFileExists "$DIR" "$DATE" "$EXT")
+        if [ -z "$DATE" ]
+        then
+            local FULL_NAME="$DIR/$FNAME"
+        else
+            local FULL_NAME=$(checkFileExists "$DIR" "$DATE" "$EXT")
+        fi
 
         if [ ${ISTEST} -eq 1 ]
         then
@@ -95,8 +113,21 @@ function encodeVideo() {
 
         local DATE=$(getVideoDate "${file}")
         local DIR=`dirname "${file}"`
+        
+        if [ -z "$DATE" ]
+        then
+            local FNAME=$(basename "$file")
+            local FILENAME="${FNAME%.*}"
 
-        local FULL_NAME=$(checkFileExists "$DIR" "$DATE" "$VIDEOEXT")
+            if [ "${FILENAME:0:3}" = VID ]
+            then
+                local FULL_NAME=$(checkFileExists "$DIR" "${FILENAME:4}" "$VIDEOEXT")
+            else
+                local FULL_NAME=$(checkFileExists "$DIR" "$FILENAME" "$VIDEOEXT")
+            fi
+        else
+            local FULL_NAME=$(checkFileExists "$DIR" "$DATE" "$VIDEOEXT")
+        fi
 
         if [ ${ISTEST} -eq 1 ]
         then

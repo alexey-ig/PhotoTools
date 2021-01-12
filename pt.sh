@@ -153,7 +153,7 @@ function concatVideo() {
         then
             echo "echo \"file '${file}'\" >> ${CONCAT}"
         else
-            echo "file '$file'" >> ${CONCAT}
+            echo "file '$file'" >> "${CONCAT}"
         fi
     done
 
@@ -162,8 +162,8 @@ function concatVideo() {
         echo "${FFMPEG} -f concat -safe 0 -i ${CONCAT} -c copy ${OUTPUT}"
         echo "rm -f ${CONCAT}"
     else
-        ${FFMPEG} -f concat -safe 0 -i ${CONCAT} -c copy ${OUTPUT}
-        rm -f ${CONCAT}
+        ${FFMPEG} -f concat -safe 0 -i "${CONCAT}" -c copy "${OUTPUT}"
+        rm -f "${CONCAT}"
     fi
 
     local COUNTER=0

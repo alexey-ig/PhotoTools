@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+
 FFMPEG=/usr/bin/ffmpeg
 FFPROBE=/usr/bin/ffprobe
 JHEAD=/usr/bin/jhead
